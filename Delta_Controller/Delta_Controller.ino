@@ -479,24 +479,45 @@ void SendChangeEGCode()
 	{
 		return;
 	}
-	for (uint8_t i = 0; i < 3; i++)
+	if (EndEffect == VACCUM)
 	{
-		if (Device[i] == DELTA)
-		{
-			if (EndEffect == VACCUM)
-			{
-				Mode = MOVE;
-				lbNoticeScan->SetText("-Moving...");
-				lbNoticeManually->SetText("-Moving...");
-				SendVaccumGcode(E_Delta);
-			}
-		}
+		//Mode = MOVE;
+		//lbNoticeScan->SetText("-Moving...");
+		//lbNoticeManually->SetText("-Moving...");
+		SendVaccumGcode(E_Delta);
 	}
 }
 
 void SendVaccumGcode(bool value)
 {
+	E_Delta = !E_Delta;
 
+	if (E_Delta == true)
+	{
+		for (uint8_t i = 0; i < 3; i++)
+		{
+			if (Device[i] == DELTA)
+			{
+				smChooseE->SetText("E:Vaccum O");
+				SerialCMD_COM[i]._Serial->println("G41 P0");
+				SerialCMD_COM[i]._Serial->println("G42 V0");
+				break;
+			}
+		}
+	}
+	else
+	{
+		for (uint8_t i = 0; i < 3; i++)
+		{
+			if (Device[i] == DELTA)
+			{
+				smChooseE->SetText("E:Vaccum F");
+				SerialCMD_COM[i]._Serial->println("G41 P1");
+				SerialCMD_COM[i]._Serial->println("G42 V1");
+				break;
+			}
+		}
+	}
 }
 
 void SendMoveXGCode()
