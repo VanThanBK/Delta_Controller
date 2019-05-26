@@ -954,19 +954,20 @@ void ClearAutoMenu()
 
 void FunctionForwardData()
 {
-	for (uint8_t i = 0; i < 3; i++)
-	{
 		if (ftForwardData->Text == "Control")
 		{
-			SerialCMD_COM[i].IsForwardData = true;
+			if (Device[0] == DELTA || Device[0] == CONVEYOR) SerialCMD_COM[0].IsForwardData = true;
+			if (Device[1] == DELTA || Device[1] == CONVEYOR) SerialCMD_COM[1].IsForwardData = true;
+			if (Device[2] == DELTA || Device[2] == CONVEYOR) SerialCMD_COM[2].IsForwardData = true;		
 			ftForwardData->SetText("Forward");
 		}
 		else
 		{
-			SerialCMD_COM[i].IsForwardData = false;
+			SerialCMD_COM[0].IsForwardData = false;
+			SerialCMD_COM[1].IsForwardData = false;
+			SerialCMD_COM[2].IsForwardData = false;
 			ftForwardData->SetText("Control");
 		}
-	}
 }
 
 void SendSetM03GCode()
